@@ -35,3 +35,5 @@ Todo later:
   - [ ] Processing units take stock of connected stock piles and process them to other materials that are placed in another stock pile
   - [ ] Processing units have a statistical fluctuation in their behaviour.
   - [ ] instead of statically placing the elements a kind of force graph should be supported
+
+The documentation is created here: https://stho32.github.io/ThroughputSimulation/Source/index.html
