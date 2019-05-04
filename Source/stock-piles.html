@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/main.css">
+
+    <title>Throughput simulation</title>
+</head>
+
+<body>
+    <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom box-shadow">
+        <h5 class="my-0 mr-md-auto font-weight-normal">ThroughputSimulation</h5>
+        <nav class="my-2 my-md-0 mr-md-3">
+            <a class="p-2 text-dark" href="stock-piles.html">Stock piles</a>
+        </nav>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-sm">
+                <h1>What is a stock pile?</h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm">
+                <div id="chart-area">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+    <script src="js/d3.min.js"></script>
+    <script src="js/stock-pile.js"></script>
+
+    <script>
+        // A stock of invoices
+        let stockpiledata = [
+            new StockPile(10,10,"Pile of invoices","invoices",17)
+        ];
+
+        var svg = d3.
+            select("#chart-area").
+            append("svg").
+            attr("height", 120).
+            attr("width", 160);
+
+        svg.append("rect")
+           .attr("height", 120)
+           .attr("width", 160)
+           .attr("fill", "grey");
+
+        var stockpiles = svg.
+            selectAll("g.stock_pile").
+            data(stockpiledata);
+
+        var new_stockpiles = stockpiles.enter()
+            .append("g")
+            .attr("class", "stock_pile");
+        
+        new_stockpiles
+            .append("rect")
+            .attr("x", (d) => d.x)
+            .attr("y", (d) => d.y)
+            .attr("width", (d) => d.width)
+            .attr("height", (d) => d.height)
+            .attr("stroke", "black")
+            .attr("fill", "white")
+            .attr("stroke-width", "1");
+
+        new_stockpiles
+            .append("text")
+            .attr("class", "stock_pile-heading")
+            .text((d) => d.Name)
+            .attr("x", (d) => d.x + 5)
+            .attr("y", (d) => d.y + 16)
+            .attr("fill", "grey")
+            .attr("font-weight", "bold")
+            .attr("text-anchor", "start")
+            .attr("font-family", "sans-serif")
+            .attr("font-size", "14px");
+
+        new_stockpiles
+            .append("text")
+            .attr("class", "stock_pile-material")
+            .text((d) => d.Material)
+            .attr("x", (d) => d.x + 5)
+            .attr("y", (d) => d.y + d.height - 5)
+            .attr("fill", "silver")
+            .attr("text-anchor", "start")
+            .attr("font-family", "sans-serif")
+            .attr("font-size", "10px");
+
+        new_stockpiles
+            .append("text")
+            .attr("class", "stock_pile-stock")
+            .text((d) => d.Stock)
+            .attr("x", (d) => d.x + ((d.width-d.x)/2))
+            .attr("y", (d) => d.y + ((d.height-d.y)/2)+10)
+            .attr("fill", "black")
+            .attr("text-anchor", "middle")
+            .attr("font-family", "sans-serif")
+            .attr("font-size", "24px");            
+
+/*
+        infocircles.append("text")
+            .text(function (value) { return value.name; })
+            .attr("x", function (value, index) { return index * 25; })
+            .attr("y", function (value, index) { return Math.sin(index) * 25 + 100; })
+            .attr("text-anchor", "middle")
+            .attr("font-family", "sans-serif")
+            .attr("fill", "red")
+            .attr("font-size", "10px");
+        */
+
+    </script>
+
+</body>
+
+</html>
