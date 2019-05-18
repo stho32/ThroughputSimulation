@@ -1,4 +1,13 @@
 ﻿/**
+ * We need a unique id for the nodes!
+ */
+var nodeDispenserId = 0;
+function NodeIdDispenser() {
+    nodeDispenserId += 1;
+    return nodeDispenserId;
+}
+
+/**
  * Everything that is a circle.
  * 
  * @param {string} label 
@@ -6,6 +15,7 @@
 function Node(label) {
     var publicApi = {};
 
+    publicApi.id = NodeIdDispenser();
     publicApi.label = label;
     publicApi.incomingEdges = [];
     publicApi.outgoingEdges = [];
@@ -81,10 +91,3 @@ function TransportWorker(label,minimumCapacity,maximumCapacity) {
     return publicApi;   
 }
 
-var a = Node("A");
-var b = Node("B");
-var edge = Edge(3).connect(a,b);
- 
-var sampleGraph = [
-    a,b,edge
-];
