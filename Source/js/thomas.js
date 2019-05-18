@@ -1,4 +1,9 @@
-﻿function Node(label) {
+﻿/**
+ * Everything that is a circle.
+ * 
+ * @param {string} label 
+ */
+function Node(label) {
     var publicApi = {};
 
     publicApi.label = label;
@@ -22,6 +27,11 @@
     return publicApi;
 }
 
+/**
+ * Everything like an arrow.
+ * 
+ * @param {string} label 
+ */
 function Edge(label) {
     var publicApi = {};
 
@@ -31,6 +41,15 @@ function Edge(label) {
         fromNode.connectOutgoingEdge(publicApi);
         toNode.connectIncomingEdge(publicApi);
     }
+
+    return publicApi;
+}
+
+function StockPile(label, stock, material) {
+    var publicApi = Node(label);
+
+    publicApi.stock = stock;
+    publicApi.material = material;
 
     return publicApi;
 }
