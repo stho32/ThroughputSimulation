@@ -36,8 +36,12 @@ function Edge(label) {
     var publicApi = {};
 
     publicApi.label = label;
+    publicApi.fromNode = null;
+    publicApi.toNode = null;
 
     publicApi.connect = (fromNode, toNode) => {
+        publicApi.fromNode = fromNode;
+        publicApi.toNode = toNode;
         fromNode.connectOutgoingEdge(publicApi);
         toNode.connectIncomingEdge(publicApi);
     }
