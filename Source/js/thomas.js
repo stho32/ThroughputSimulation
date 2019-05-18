@@ -45,6 +45,13 @@ function Edge(label) {
     return publicApi;
 }
 
+/**
+ * A pile of stock
+ * 
+ * @param {string} label 
+ * @param {number} stock 
+ * @param {string} material 
+ */
 function StockPile(label, stock, material) {
     var publicApi = Node(label);
 
@@ -52,6 +59,22 @@ function StockPile(label, stock, material) {
     publicApi.material = material;
 
     return publicApi;
+}
+
+/**
+ * Worker that carries something between nodes.
+ * 
+ * @param {string} label 
+ * @param {number} minimumCapacity 
+ * @param {number} maximumCapacity 
+ */
+function TransportWorker(label,minimumCapacity,maximumCapacity) {
+    var publicApi = Edge(label);
+
+    publicApi.minimumCapacity = minimumCapacity;
+    publicApi.maximumCapacity = maximumCapacity;
+
+    return publicApi;   
 }
 
 var a = Node("A");
