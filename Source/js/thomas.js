@@ -24,18 +24,12 @@ function Node(label) {
     publicApi.incomingEdges = [];
     publicApi.outgoingEdges = [];
 
-    publicApi.connectIncomingEdge = (edge, fromNode) => {
-        publicApi.incomingEdges.push({
-            edge : edge, 
-            fromNode : fromNode
-        });
+    publicApi.connectIncomingEdge = (edge) => {
+        publicApi.incomingEdges.push(edge);
     }
 
     publicApi.connectOutgoingEdge = (edge, toNode) => {
-        publicApi.outgoingEdges.push({
-            edge : edge, 
-            toNode : toNode
-        });
+        publicApi.outgoingEdges.push(edge);
     }
 
     return publicApi;
@@ -56,6 +50,7 @@ function Edge(label) {
     publicApi.connect = (fromNode, toNode) => {
         publicApi.fromNode = fromNode;
         publicApi.toNode = toNode;
+
         fromNode.connectOutgoingEdge(publicApi);
         toNode.connectIncomingEdge(publicApi);
 
@@ -79,7 +74,6 @@ function StockPile(label, stock, material, lazynessMs) {
     publicApi.stock = stock;
     publicApi.material = material;
 
-    /*
     window.setInterval(
         function() {
             if ( publicApi.id === 1 ) {
@@ -97,7 +91,7 @@ function StockPile(label, stock, material, lazynessMs) {
             } 
         },
         lazynessMs
-    )*/
+    )
 
     return publicApi;
 }

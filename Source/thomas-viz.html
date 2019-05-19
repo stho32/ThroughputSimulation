@@ -11,30 +11,30 @@
 <h1>Visualization, Thomas approach</h1>
 
 <style id="css">
-/* This sets the color for "TK" nodes to a light blue green. */
-g.type-TK > rect {
-  fill: #00ffd0;
-}
+  /* This sets the color for "TK" nodes to a light blue green. */
+  g.type-TK>rect {
+    fill: #00ffd0;
+  }
 
-text {
-  font-weight: 300;
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-size: 14px;
-}
+  text {
+    font-weight: 300;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 14px;
+  }
 
-.node rect {
-  stroke: #999;
-  fill: #fff;
-  stroke-width: 1.5px;
-}
+  .node rect {
+    stroke: #999;
+    fill: #fff;
+    stroke-width: 1.5px;
+  }
 
-.edgePath path {
-  stroke: #333;
-  stroke-width: 1.5px;
-}
+  .edgePath path {
+    stroke: #333;
+    stroke-width: 1.5px;
+  }
 </style>
 
-<svg id="svg-canvas" width=1920 height=1024></svg>
+<svg id="svg-canvas" width=1024 height=1024></svg>
 
 <section>
 </section>
@@ -42,67 +42,70 @@ text {
 <script id="js">
   var nodes = [];
   var edges = [];
-  
-  var nodeCount = Math.floor( Math.random() * 20 );
+
+  var nodeCount = Math.floor(Math.random() * 20);
   //var nodeCount = 2;
-  
-  for ( let i = 0; i < nodeCount; i++ ) {
-    let randomStock = Math.floor( Math.random() * 100 ) + 1;
-    let lazynessMs =  Math.floor( Math.random() * 1000 ) + 1000;
+
+  for (let i = 0; i < nodeCount; i++) {
+    let randomStock = Math.floor(Math.random() * 100) + 1;
+    let lazynessMs = Math.floor(Math.random() * 1000) + 1000;
     let node = StockPile("Stock pile", randomStock, "x", lazynessMs);
     console.log(node);
-    if ( nodes.length > 0 ) {
-      var edgeCount = Math.floor( Math.random() * 3 ) + 1;
+    if (nodes.length > 0) {
+      var edgeCount = Math.floor(Math.random() * 3) + 1;
       //var edgeCount = 1;
-      var randomNodeIndex = Math.floor( (Math.random() * nodes.length));
-      for ( let j = 0; j < edgeCount; j++ ) {
+      var randomNodeIndex = Math.floor((Math.random() * nodes.length));
+      for (let j = 0; j < edgeCount; j++) {
         edges.push(Edge("Edge").connect(nodes[randomNodeIndex], node));
       }
     }
     nodes.push(node);
   }
- 
-var sampleGraph = {
-  nodes : nodes,
-  edges : edges
-};
 
-// Create the input graph
-var g = new dagreD3.graphlib.Graph()
-  .setGraph({})
-  .setDefaultEdgeLabel(function() { return {}; });
-
-// Here we"re setting nodeclass, which is used by our custom drawNodes function
-// below.
-for (let i = 0; i < sampleGraph.nodes.length; i++) {
-  g.setNode(sampleGraph.nodes[i].id,  
-    { label: sampleGraph.nodes[i].label,
-      width: sampleGraph.nodes[i].stock,
-      height: sampleGraph.nodes[i].stock });
-}
-
-for (let i = 0; i < sampleGraph.edges.length; i++) {
-  let currentEdge = sampleGraph.edges[i];
-  g.setEdge(currentEdge.fromNode.id, currentEdge.toNode.id);
-}
+  var sampleGraph = {
+    nodes: nodes,
+    edges: edges
+  };
+  console.log(sampleGraph);
+  // Create the input graph
 
 
-window.setInterval(function() {
-  //console.log(sampleGraph);
-  // Create the renderer
-  var render = new dagreD3.render();
 
-  // Set up an SVG group so that we can translate the final graph.
-  var svg = d3.select("svg"),
+  window.setInterval(function () {
+    var g = new dagreD3.graphlib.Graph()
+      .setGraph({})
+      .setDefaultEdgeLabel(function () { return {}; });
+
+    // Here we"re setting nodeclass, which is used by our custom drawNodes function
+    // below.
+    for (let i = 0; i < sampleGraph.nodes.length; i++) {
+      g.setNode(sampleGraph.nodes[i].id,
+        {
+          label: sampleGraph.nodes[i].label,
+          width: sampleGraph.nodes[i].stock,
+          height: sampleGraph.nodes[i].stock
+        });
+    }
+
+    for (let i = 0; i < sampleGraph.edges.length; i++) {
+      let currentEdge = sampleGraph.edges[i];
+      g.setEdge(currentEdge.fromNode.id, currentEdge.toNode.id);
+    }
+    //console.log(sampleGraph);
+    // Create the renderer
+    var render = new dagreD3.render();
+
+    // Set up an SVG group so that we can translate the final graph.
+    var svg = d3.select("svg"),
       svgGroup = svg.append("g");
 
-  // Run the renderer. This is what draws the final graph.
-  render(d3.select("svg g"), g);
+    // Run the renderer. This is what draws the final graph.
+    render(d3.select("svg g"), g);
 
-  // Center the graph
-  var xCenterOffset = (svg.attr("width") - g.graph().width) / 2;
-  svgGroup.attr("transform", "translate(" + xCenterOffset + ", 20)");
-  svg.attr("height", g.graph().height + 40);
-}, 1000);
+    // Center the graph
+    var xCenterOffset = (svg.attr("width") - g.graph().width) / 2;
+    svgGroup.attr("transform", "translate(" + xCenterOffset + ", 20)");
+    svg.attr("height", g.graph().height + 40);
+  }, 200);
 
 </script>
