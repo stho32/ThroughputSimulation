@@ -2,7 +2,7 @@
 
 I lately created a prototype here : https://github.com/stho32/DasZiel-Spiel
 
-Creative Code Jam "thomas" : https://github.com/stho32/TroughputSimulation/Source/thomas-viz.html
+Creative Code Jam "thomas" : https://stho32.github.io/ThroughputSimulation/Source/thomas-viz.html
 
 That got me interested to graphically simulate company structures. 
 So I work on this project here. 
