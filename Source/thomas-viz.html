@@ -34,19 +34,37 @@ text {
 }
 </style>
 
-<svg id="svg-canvas" width=960 height=600></svg>
+<svg id="svg-canvas" width=1920 height=1024></svg>
 
 <section>
 </section>
 
 <script id="js">
-var a = Node("A");
-var b = Node("B");
-var edge = Edge(3).connect(a,b);
+  var nodes = [];
+  var edges = [];
+  
+  var nodeCount = Math.floor( Math.random() * 20 );
+  //var nodeCount = 2;
+  
+  for ( let i = 0; i < nodeCount; i++ ) {
+    let randomStock = Math.floor( Math.random() * 100 ) + 1;
+    let lazynessMs =  Math.floor( Math.random() * 1000 ) + 1000;
+    let node = StockPile("Stock pile", randomStock, "x", lazynessMs);
+    console.log(node);
+    if ( nodes.length > 0 ) {
+      var edgeCount = Math.floor( Math.random() * 3 ) + 1;
+      //var edgeCount = 1;
+      var randomNodeIndex = Math.floor( (Math.random() * nodes.length));
+      for ( let j = 0; j < edgeCount; j++ ) {
+        edges.push(Edge("Edge").connect(nodes[randomNodeIndex], node));
+      }
+    }
+    nodes.push(node);
+  }
  
 var sampleGraph = {
-  nodes : [a,b],
-  edges : [edge]
+  nodes : nodes,
+  edges : edges
 };
 
 // Create the input graph
@@ -58,39 +76,33 @@ var g = new dagreD3.graphlib.Graph()
 // below.
 for (let i = 0; i < sampleGraph.nodes.length; i++) {
   g.setNode(sampleGraph.nodes[i].id,  
-    { label: sampleGraph.nodes[i].label,       
-      class: "type-TOP" });
+    { label: sampleGraph.nodes[i].label,
+      width: sampleGraph.nodes[i].stock,
+      height: sampleGraph.nodes[i].stock });
 }
 
-// Set up edges, no special attributes.
-/*
-g.setEdge(3, 4);
-g.setEdge(2, 3);
-g.setEdge(1, 2);
-g.setEdge(6, 7);
-g.setEdge(5, 6);
-g.setEdge(9, 10);
-g.setEdge(8, 9);
-g.setEdge(11,12);
-g.setEdge(8, 11);
-g.setEdge(5, 8);
-g.setEdge(1, 5);
-g.setEdge(13,14);
-g.setEdge(1, 13);
-g.setEdge(0, 1)
-*/
-// Create the renderer
-var render = new dagreD3.render();
+for (let i = 0; i < sampleGraph.edges.length; i++) {
+  let currentEdge = sampleGraph.edges[i];
+  g.setEdge(currentEdge.fromNode.id, currentEdge.toNode.id);
+}
 
-// Set up an SVG group so that we can translate the final graph.
-var svg = d3.select("svg"),
-    svgGroup = svg.append("g");
 
-// Run the renderer. This is what draws the final graph.
-render(d3.select("svg g"), g);
+window.setInterval(function() {
+  //console.log(sampleGraph);
+  // Create the renderer
+  var render = new dagreD3.render();
 
-// Center the graph
-var xCenterOffset = (svg.attr("width") - g.graph().width) / 2;
-svgGroup.attr("transform", "translate(" + xCenterOffset + ", 20)");
-svg.attr("height", g.graph().height + 40);
+  // Set up an SVG group so that we can translate the final graph.
+  var svg = d3.select("svg"),
+      svgGroup = svg.append("g");
+
+  // Run the renderer. This is what draws the final graph.
+  render(d3.select("svg g"), g);
+
+  // Center the graph
+  var xCenterOffset = (svg.attr("width") - g.graph().width) / 2;
+  svgGroup.attr("transform", "translate(" + xCenterOffset + ", 20)");
+  svg.attr("height", g.graph().height + 40);
+}, 1000);
+
 </script>

@@ -16,7 +16,11 @@ function Node(label) {
     var publicApi = {};
 
     publicApi.id = NodeIdDispenser();
+    console.log("Node " + label + ":" +  publicApi.id);
     publicApi.label = label;
+    if ( label === undefined ) {
+        label = publicApi.id;
+    }
     publicApi.incomingEdges = [];
     publicApi.outgoingEdges = [];
 
@@ -54,6 +58,8 @@ function Edge(label) {
         publicApi.toNode = toNode;
         fromNode.connectOutgoingEdge(publicApi);
         toNode.connectIncomingEdge(publicApi);
+
+        return publicApi;
     }
 
     return publicApi;
@@ -66,11 +72,32 @@ function Edge(label) {
  * @param {number} stock 
  * @param {string} material 
  */
-function StockPile(label, stock, material) {
+function StockPile(label, stock, material, lazynessMs) {
     var publicApi = Node(label);
 
+    publicApi.label = publicApi.label + " " + publicApi.id;
     publicApi.stock = stock;
     publicApi.material = material;
+
+    /*
+    window.setInterval(
+        function() {
+            if ( publicApi.id === 1 ) {
+                console.log(publicApi.label + ": " + publicApi.stock);
+            }
+
+            for (let i = 0; i < publicApi.incomingEdges.length; i++ ) {
+                if ( publicApi.id === 1 ) {
+                    console.log(publicApi.incomingEdges[i]);
+                }                
+                if ( publicApi.incomingEdges[i].fromNode.stock > 0 ) {
+                    publicApi.incomingEdges[i].fromNode.stock = publicApi.incomingEdges[i].fromNode.stock - 1;
+                    publicApi.stock = publicApi.stock + 1;
+                }
+            } 
+        },
+        lazynessMs
+    )*/
 
     return publicApi;
 }
